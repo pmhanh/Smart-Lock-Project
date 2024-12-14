@@ -1,0 +1,63 @@
+body{
+  background-color: #264653;
+}
+
+.header-bar {
+  display: flex;
+  justify-content: space-between; 
+
+}
+.icon-text{
+  font-family: "Poppins";
+  font-weight: 500;
+  font-style: normal;
+  font-size: 30px;
+  color: white;
+}
+.icon-img{
+  height: 40%;
+  width: auto;
+  top: 50%;
+  transform: translateY(70%);
+}
+
+.right-header{
+  display: flex;
+  justify-content: space-around;
+}
+
+.login-box {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: white;
+  width: 30%;
+  height: 500px; /* Add height for visibility */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-family: 'Poppins'; 
+  font-style: normal;
+  font-weight: 500;
+}
+
+.login-title{
+  font-size: 35px;
+}
+
+.login-form {
+  background-color: white;
+}
+
+.login-form > input{
+  width: 100%;
+  max-width: 500px;
+  height: 30%;
+}
+
+
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh; 
+}

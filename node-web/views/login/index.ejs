@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Firebase App (the core Firebase SDK) -->
+  <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js"></script>
+  <!-- Firebase Authentication -->
+  <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-auth.js"></script>
+
+  <title>Home page</title>
+  <link rel="stylesheet" href="../css/login1.css">
+</head>
+<body>
+  <section class="header-bar">
+  <div class="right-header">
+    <img src="../assets/lock_contrast.png" alt="Lock icon" class="icon-img">
+    <p class="icon-text">Smart Lock</p>
+  </div> 
+  <div class="left-header">
+  </div>
+  </section>
+
+  <div class="main-container">
+    <div class="login-box">
+      <div class="login-title">
+        <p>Login to your account</p>
+      </div>
+      <form class="login-form">
+        <label for="email">Email</label><br>
+        <input type="text" id="email" name="email"><br>
+        <label for="password">Password</label><br>
+        <input type="password" id="password" name="password"><br>
+        <input type="submit" value="Submit">
+      </form>
+
+    </div>
+  </div>
+</body>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+  </style>
+  <script>
+  // Initialize Firebase
+  
+  const firebaseConfig = {
+  apiKey: "AIzaSyAh1iF_DmWmogEEdmk4UOG8Phdtgln134Y",
+  authDomain: "smartlock-f37cb.firebaseapp.com",
+  databaseURL: "https://smartlock-f37cb-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "smartlock-f37cb",
+  storageBucket: "smartlock-f37cb.firebasestorage.app",
+  messagingSenderId: "637740604909",
+  appId: "1:637740604909:web:65d6943f8a2abdb63ddbe4",
+  measurementId: "G-CRRCENZXT5"
+};
+
+// Initialize Firebase
+const app = firebase.initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const auth = firebase.auth();
+
+  // Handle Login
+  document.querySelector('.login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+  
+    try {
+      // Sign in with Firebase Authentication
+      const userCredential = await auth.signInWithEmailAndPassword(email, password);
+      alert(`Welcome, ${userCredential.user.email}`);
+      console.log("Correct")
+      // Redirect or perform another action here
+    } catch (error) {
+      alert(`Error: ${error.message}`);
+    }
+  });
+  </script>
+</html>
