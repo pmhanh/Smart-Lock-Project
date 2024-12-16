@@ -1,63 +1,80 @@
-body{
-  background-color: #264653;
-}
-
 .header-bar {
-  display: flex;
-  justify-content: space-between; 
-
-}
-.icon-text{
-  font-family: "Poppins";
-  font-weight: 500;
-  font-style: normal;
-  font-size: 30px;
-  color: white;
-}
-.icon-img{
-  height: 40%;
-  width: auto;
-  top: 50%;
-  transform: translateY(70%);
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    justify-content: space-between;
 }
 
-.right-header{
-  display: flex;
-  justify-content: space-around;
+.right-header {
+    display: flex;
+    align-items: center;
 }
 
-.login-box {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  background-color: white;
-  width: 30%;
-  height: 500px; /* Add height for visibility */
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  font-family: 'Poppins'; 
-  font-style: normal;
-  font-weight: 500;
+.icon-img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
 }
 
-.login-title{
-  font-size: 35px;
+.icon-text {
+    font-size: 30px;
+    font-weight: bold;
+    color: white;
 }
 
-.login-form {
-  background-color: white;
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: calc(100vh - 115px);
+    overflow-y: auto;
 }
 
-.login-form > input{
-  width: 100%;
-  max-width: 500px;
-  height: 30%;
+.container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    width: 500px;
 }
 
+label{
+    text-align: left;
+}
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
 
-.main-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 90vh; 
+}
+
+input[type="email"],
+input[type="password"] {
+    padding: 15px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.login-button {
+    background-color: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 15px;
+    font-size: 1rem;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+p, span {
+    margin: 0;
+    padding: 10px;
 }
