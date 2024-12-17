@@ -62,6 +62,11 @@ app.get('/notify', (req, res) => {
   res.render('notify_password')
 })
 
+
+app.get('/history', (req, res) => {
+  res.render('history')
+})
+
 // const mqttClient = mqtt.connect('mqtt://broker.hivemq.com:1883');
 
 // const statusTopic = 'smartLock/status';
