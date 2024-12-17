@@ -11,7 +11,8 @@ const auth_router= require('./routes');
 
 app.use(express.static('public'));
 app.use(cookieParser())
-app.use(express.urlencoded())
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
 
 
 
@@ -39,9 +40,11 @@ app.get('/login', (req, res) => {
 
 
 // reset password page
-app.get('/reset', (req, res) => {
-  res.render('resetpassword');
+app.get('/forgot', (req, res) => {
+  res.render('forgot_password');
 });
+
+app.get
 
 
 app.use('/', auth_router);
@@ -50,6 +53,14 @@ app.get('/signup', (req, res) => {
   res.render('signup');
 });
 
+
+app.get('/reset', (req, res) => {
+  res.render('resetpassword')
+})
+
+app.get('/notify', (req, res) => {
+  res.render('notify_password')
+})
 
 // const mqttClient = mqtt.connect('mqtt://broker.hivemq.com:1883');
 
