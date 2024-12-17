@@ -24,14 +24,14 @@
                 <h2>Login to your account</h2>
                 <!-- <p style="font-size: 24px; font-weight:bold;">Login to your account</p> -->
             </div>
-            <form action="">
+            <form action="/api/login" method="post">
                 <label for="email">Email</label>
                 <input type="email" name="email" placeholder="Enter your email address">
                 <label for="password">Password</label>
                 <input type="password" name="password" id="" placeholder="Enter your password">
                 <button class="login-button">Login now</button>
             </form>
-            <a href="/reset">Forgot your password?</a>
+            <a href="/forgot">Forgot your password?</a>
             <p>OR</p>
             <span>Don't have an account? </span>
             <a href="/signup">Sign up</a>
