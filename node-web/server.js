@@ -53,6 +53,9 @@ app.get('/signup', (req, res) => {
   res.render('signup');
 });
 
+app.get('/history', (req, res) =>{
+  res.render('history');
+});
 
 app.get('/reset', (req, res) => {
   res.render('resetpassword')
