@@ -1,4 +1,3 @@
-
 const { 
   getAuth, 
   createUserWithEmailAndPassword, 
@@ -7,23 +6,19 @@ const {
   sendEmailVerification,
   sendPasswordResetEmail,
   db
- } = require('../config/firebase');
+} = require('../config/firebase');
 
+const { v4: uuidv4 } = require('uuid');
+const { getFirestore, doc, setDoc, getDoc, updateDoc } = require('firebase/firestore');
 
- const auth = getAuth();
- const { v4: uuidv4 } = require('uuid');
- const {ref, set, get, child,  update} = require('firebase/database')
- function generateUserId(){
-  return uuidv4()
+const auth = getAuth();
 
- }
+function generateUserId() {
+  return uuidv4();
+}
 
-
-
-
-
- class FirebaseAuthController{
-  registerUser(req, res) {
+class FirebaseAuthController {
+  async registerUser(req, res) {
     const email = req.body.email;
     const username = req.body.username;
     const password = req.body.password;
@@ -32,102 +27,92 @@ const {
       return res.status(422).json({
         email: "Email is required",
         password: "Password is required",
-        username: "User name is required"
+        username: "User name is required",
       });
     }
   
-    const auth = getAuth();
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
   
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(async(userCredential) => {
-        const user = userCredential.user;
-        const dbRef = ref(db);
-        const snapshot = await get(child(dbRef, `users/${user.uid}`));
-        if (!snapshot.exists()) {
-          // Store user data in Realtime Database
-          await set(ref(db, `users/${user.uid}`), {
-            username: username ,
-            email: email,
-            createdAt: new Date().toISOString(),
-            activate_email: false
-          });
-        } 
-        // Send verification email
-        return sendEmailVerification(user).then(() => {
-          res.render("notify_password", {
-            message: "Check your email to activate your account."
-          });
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-        res.status(500).json({ error: error.message || "Registration failed" });
+      // Send email verification
+      await sendEmailVerification(user);
+  
+      res.render("notify_password", {
+        message: "Check your email to activate your account.",
       });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: error.message || "Registration failed" });
+    }
   }
   
-  
 
-
-  
-  loginUser(req, res){
+  async loginUser(req, res) {
     const email = req.body.email;
-
     const password = req.body.password;
-    if (!email || !password){
+  
+    if (!email || !password) {
       return res.status(422).json({
         email: "Email is required",
-        password: "Password is required"
+        password: "Password is required",
       });
     }
-    const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
-      .then(async(userCredential) => {
-        const user = userCredential.user;
-        if (!user.emailVerified) {
-          await signOut(auth)
-          return res.status(403).json({
-            error: "Please verify your email address before logging in."
-          });
-        }
-        // Check if user exists in Realtime Database
-        const updates = {
-          activate_email: true
-        }
-        const dbRef = ref(db, `users/${user.uid}`);
-        const snapshot = await get(child(dbRef, `users/${user.uid}`));
-        await update(dbRef, updates)
-        const idToken = userCredential._tokenResponse.idToken
-        if (idToken) {
-            res.cookie('access_token', idToken, {
-                httpOnly: true
-            });
-            return res.redirect('/');
-        } else {
-            res.status(500).json({ error: "Internal Server Error" });
-        }
-        })
-      .catch((error) => {
-          console.error(error);
-          const errorMessage = error.message || "An error occurred while logging in";
-          res.status(500).json({ error: errorMessage });
-      })
-
+  
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+  
+      // Ensure the user has verified their email
+      if (!user.emailVerified) {
+        await signOut(auth);
+        return res.status(403).json({
+          error: "Please verify your email address before logging in.",
+        });
+      }
+  
+      // Check if Firestore document exists
+      const userRef = doc(db, "users", user.uid);
+      const snapshot = await getDoc(userRef);
+  
+      if (!snapshot.exists()) {
+        // Create Firestore document after email verification
+        await setDoc(userRef, {
+          username: req.body.username || "Unknown",
+          email: email,
+          createdAt: new Date().toISOString(),
+          activate_email: true,
+        });
+      }
+  
+      const idToken = userCredential._tokenResponse.idToken;
+      if (idToken) {
+        res.cookie("access_token", idToken, { httpOnly: true });
+        return res.redirect("/");
+      } else {
+        res.status(500).json({ error: "Internal Server Error" });
+      }
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: error.message || "Login failed" });
+    }
   }
-  resetPassword(req, res){
+  
+
+  async resetPassword(req, res) {
     const email = req.body.email;
-    if (!email){
-      res.status(422).json({
-        email: "Email is required"
-      });
+
+    if (!email) {
+      return res.status(422).json({ email: "Email is required" });
     }
-    sendPasswordResetEmail(auth, email)
-      .then(() => {
-        res.render('notify_password')
-      })
-      .catch((error) => {
-        console.log(error);
-        res.status(500).json({error : "Internal Server Error"})
-      })
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      res.render('notify_password');
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal Server Error" });
+    }
   }
 }
 
