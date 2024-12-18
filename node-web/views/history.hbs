@@ -33,23 +33,20 @@
                     <tr>
                         <th>Date Time</th>
                         <th>State</th>
-                        <!-- <th>Image</th>
-                        <th>Result</th> -->
+                        <th>Image</th>
+                        <th>Result</th>
                     </tr>
                 </thead>
                 <tbody id="lock-history">
-                    <!-- <tr>
-                        <td>11/11/2024<br>12:35:10</td>
-                        <td>Unlock</td>
-                        <td>(Image)</td>
-                        <td>Accepted</td>
-                    </tr>
-                    <tr>
-                        <td>11/11/2024<br>12:36:25</td>
-                        <td>Lock</td>
-                        <td>(Image)</td>
-                        <td>Declined</td>
-                    </tr> -->
+                  {{#each history}}
+                  <tr>
+                      <td>{{this.datetime}}</td>
+                      <td>{{this.state}}</td>
+                      <td>{{this.imageUrl}}</td>
+                      <td>{{this.result}}</td>
+                  </tr>
+                  {{/each}}
+                    
                 </tbody>
             </table>
         </section>
