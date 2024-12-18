@@ -1,6 +1,8 @@
 // Import the functions you need from the SDKs you need
 require("dotenv").config();
 const firebase = require("firebase/app");
+const firebasedb = require('firebase/database')
+
 const firebaseConfig = {
   apiKey: "AIzaSyAh1iF_DmWmogEEdmk4UOG8Phdtgln134Y",
   authDomain: "smartlock-f37cb.firebaseapp.com",
