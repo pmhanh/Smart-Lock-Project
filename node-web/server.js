@@ -14,8 +14,9 @@ app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
 
+const {getAuth, db} = require('./config/firebase')
 
-
+const auth = getAuth()
 
 app.engine('hbs', exphbs.engine({
   defaultLayout: 'main',
@@ -44,7 +45,6 @@ app.get('/forgot', (req, res) => {
   res.render('forgot_password');
 });
 
-app.get
 
 
 app.use('/', auth_router);
@@ -63,9 +63,7 @@ app.get('/notify', (req, res) => {
 })
 
 
-app.get('/history', (req, res) => {
-  res.render('history')
-})
+
 
 // const mqttClient = mqtt.connect('mqtt://broker.hivemq.com:1883');
 
