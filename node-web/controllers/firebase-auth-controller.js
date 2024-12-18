@@ -34,6 +34,7 @@ class FirebaseAuthController {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
+      const userId = user.uid;
   
       // Send email verification
       await sendEmailVerification(user);
@@ -47,6 +48,7 @@ class FirebaseAuthController {
 
       const snapshot = await getDoc(userRef);
       //const snapshot_history = await getDoc(hisRef);
+
   
       if (!snapshot.exists()) {
         // Create Firestore document after email verification
@@ -57,6 +59,20 @@ class FirebaseAuthController {
           activate_email: false,
           has_login : false,
         });
+        user.displayName = username;
+      }
+      const docRef = doc(db, `history/${userId}`);
+
+      // Adding a new history entry to the array
+  
+      const snapshot1 = await getDoc(docRef)
+        
+      if (!snapshot1.exists()) {
+        // Create Firestore document after email verification
+        await setDoc(docRef, {
+          entries: null
+      });
+
       }
       // if (!snapshot_history.exists()){
       //   await setDoc(hisRef, {
