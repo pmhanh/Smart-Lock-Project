@@ -38,18 +38,16 @@
                     </tr>
                 </thead>
                 <tbody id="lock-history">
+                    {{#each history}}
                     <tr>
-                        <td>11/11/2024<br>12:35:10</td>
-                        <td>Unlock</td>
-                        <td>(Image)</td>
-                        <td>Accepted</td>
+                        <td>{{this.datetime}}</td>
+                        <td>{{this.state}}</td>
+                        <td>
+                          <img src="{{this.imageUrl}}" alt="Image"  style="width: 50px; height: 50px;">
+                          </td>
+                        <td>{{this.result}}</td>
                     </tr>
-                    <tr>
-                        <td>11/11/2024<br>12:36:25</td>
-                        <td>Lock</td>
-                        <td>(Image)</td>
-                        <td>Declined</td>
-                    </tr>
+                    {{each}}
                 </tbody>
             </table>
         </section>

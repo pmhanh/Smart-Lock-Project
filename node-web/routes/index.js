@@ -12,5 +12,6 @@ router.post('/api/login', firebaseAuth.loginUser);
 
 router.post('/api/forgot', firebaseAuth.resetPassword);
 
+router.post('/user/:userId/add-history', firebaseAuth.addHistoryEntry); // POST to add history
+router.get('/user/:userId/history', firebaseAuth.getUserHistory);       // GET to retrieve history
 module.exports = router;
-
