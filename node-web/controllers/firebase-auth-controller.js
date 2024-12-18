@@ -9,7 +9,7 @@ const {
 } = require('../config/firebase');
 
 const { v4: uuidv4 } = require('uuid');
-const { getFirestore, doc, setDoc, getDoc, updateDoc } = require('firebase/firestore');
+const { getFirestore, doc, setDoc, getDoc, updateDoc, query, collection, where } = require('firebase/firestore');
 
 const auth = getAuth();
 
@@ -88,7 +88,8 @@ class FirebaseAuthController {
       const idToken = userCredential._tokenResponse.idToken;
       if (idToken) {
         res.cookie("access_token", idToken, { httpOnly: true });
-        return res.redirect("/");
+        console.log("User ID:", user.uid);
+        return res.redirect(`/history/${user.uid}`);
       } else {
         res.status(500).json({ error: "Internal Server Error" });
       }
@@ -114,6 +115,62 @@ class FirebaseAuthController {
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
+
+  async addHistoryEntry(req, res) {
+    const { userId, datetime, state, imageUrl, result } = req.body;
+
+    try {
+      const docRef = await db.collection('history').add({
+        userId: userId,
+        datetime: datetime,
+        state: state,
+        imageUrl: imageUrl,
+        result: result,
+      });
+
+      res.status(200).json({
+        message: 'History entry added successfully!',
+        id: docRef.id, 
+      });
+    } catch (error) {
+      console.error('Error adding history entry:', error);
+      res.status(500).json({
+        message: 'Failed to add history entry.',
+        error: error.message,
+      });
+    }
+  }
+
+  async getUserHistory(req, res) {
+    const userId = getAuth().currentUser.uid;
+  
+    try {
+        const 
+      );
+      
+      const historySnapshot = await getDocs(historyQuery);
+  
+      if (historySnapshot.empty) {
+        // No history found for this user
+        return res.status(404).json({
+          message: 'No history found for this user.',
+        });
+      }
+  
+      // If history is found, map through the documents and return the data
+      const userHistory = historySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+  
+      res.render('history', { history: userHistory });
+  
+    } catch (error) {
+      console.error('Error fetching user history:', error);
+      res.status(500).send('Error fetching user history.');
+    }
+  }
+  
 }
 
 module.exports = new FirebaseAuthController();
