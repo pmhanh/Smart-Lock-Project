@@ -13,10 +13,11 @@ router.post('/api/login', firebaseAuth.loginUser);
 
 router.post('/api/forgot', firebaseAuth.resetPassword);
 
-router.post(`/add-history`, firebaseData.addHistoryEntry); // POST to add history
-router.get('/profile', firebaseData.getCurrentUserData);
-router.post('/update-profile', firebaseData.updateUsername);
-router.get('/history', firebaseData.getHistoryEntry);
+
+router.post("/:userId/add-history", firebaseData.addHistoryEntry);
+router.get("/:userId/profile", firebaseData.getCurrentUserData);
+router.post("/:userId/update-profile", firebaseData.updateUsername);
+router.get("/:userId/history", firebaseData.getHistoryEntry);
 
 
 module.exports = router;
