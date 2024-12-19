@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Smart Lock</title>
-  <link rel="stylesheet" href="../css/history.css">
+  <link rel="stylesheet" href="/css/profile.css">
 </head>
 <body>
     <header>
@@ -14,43 +14,52 @@
             </a>
             <p class="icon-text">Smart Lock</p>
         </div>
+
         <nav>
             <a href="../css/home.html" class="button">Home</a>
             <a href="/profile" class="button">Profile</a>
             <a href="../css/signout.html" class="button">Sign out</a>
         </nav>
     </header>
-    <main>
-        <aside>
-            <button class="side-btn">Monitor</button>
-            <button class="side-btn">History</button>
-            <button class="side-btn" onclick="controlLock('Lock')">Lock</button>
-            <button class="side-btn" onclick="controlLock('Unlock')">Unlock</button>
-        </aside>
-        <section class="history-table">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date Time</th>
-                        <th>State</th>
-                        <th>Image</th>
-                        <th>Result</th>
-                    </tr>
-                </thead>
-                <tbody id="lock-history">
-                  {{#each history}}
-                  <tr>
-                      <td>{{this.date_time}}</td>
-                      <td>{{this.state}}</td>
-                      <td>{{this.image}}</td>
-                      <td>{{this.result}}</td>
-                  </tr>
-                  {{/each}}
-                    
-                </tbody>
-            </table>
-        </section>
-    </main>
+   <main>
+  <section class="profile-container">
+    <form action="/update-profile" method="post">
+    <div class="profile-field">
+      <label>Email</label>
+      <input type="email" value="{{user.email}}" >
+    </div>
+    <div class="profile-field">
+      <label>Name</label>
+      <input type="text" value="{{user.username}}" name="username">
+      <button class="changeinfo-btn">Change user name</button>
+    </div>
+    </form>
+    <div class="profile-field">
+      <label>Password</label>
+      <a href="/forgot">
+      <button class="password-btn">Reset password</button>
+      </a>
+    </div>
+    <div class="profile-field">
+      <label>Fingerprint</label>
+      <div class="fingerprint-list">
+        <div class="fingerprint-item">
+          <button class="finger-btn">Finger 1</button>
+          <button class="delete-btn">&#128465;</button>
+        </div>
+        <div class="fingerprint-item">
+          <button class="finger-btn">Finger 2</button>
+          <button class="delete-btn">&#128465;</button>
+        </div>
+        <div class="fingerprint-item">
+          <button class="finger-btn">Finger 3</button>
+          <button class="delete-btn">&#128465;</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
 
     <script>
         // Fetch the lock status periodically
@@ -99,4 +108,8 @@
         fetchStatus();
     </script>
 </body>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+  </style>
 </html>

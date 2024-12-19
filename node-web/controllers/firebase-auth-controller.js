@@ -9,7 +9,7 @@ const {
 } = require('../config/firebase');
 
 const { v4: uuidv4 } = require('uuid');
-const { getFirestore, doc, setDoc, getDoc, updateDoc } = require('firebase/firestore');
+const { getFirestore, doc, setDoc, getDoc, updateDoc, query, collection, where } = require('firebase/firestore');
 
 const auth = getAuth();
 
@@ -41,6 +41,32 @@ class FirebaseAuthController {
       res.render("notify_password", {
         message: "Check your email to activate your account.",
       });
+
+      const userRef = doc(db, "users", user.uid);
+      //const hisRef = doc(db, "history", new Date.toISOString());
+
+      const snapshot = await getDoc(userRef);
+      //const snapshot_history = await getDoc(hisRef);
+  
+      if (!snapshot.exists()) {
+        // Create Firestore document after email verification
+        await setDoc(userRef, {
+          username: username || "Unknown",
+          email: email,
+          createdAt: new Date().toISOString(),
+          activate_email: false,
+          has_login : false,
+        });
+      }
+      // if (!snapshot_history.exists()){
+      //   await setDoc(hisRef, {
+      //     email: email,
+      //     date_time: null,
+      //     image: null,
+      //     state: null,
+      //     result: null,
+      //   })
+      // }
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: error.message || "Registration failed" });
@@ -52,6 +78,7 @@ class FirebaseAuthController {
     const email = req.body.email;
     const password = req.body.password;
   
+    
     if (!email || !password) {
       return res.status(422).json({
         email: "Email is required",
@@ -62,7 +89,11 @@ class FirebaseAuthController {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
+      const userId = user.uid
+      const user_email = user.email
   
+      const userRef = doc(db, "users", user.uid);
+      const snapshot = await getDoc(userRef);
       // Ensure the user has verified their email
       if (!user.emailVerified) {
         await signOut(auth);
@@ -70,25 +101,28 @@ class FirebaseAuthController {
           error: "Please verify your email address before logging in.",
         });
       }
-  
-      // Check if Firestore document exists
-      const userRef = doc(db, "users", user.uid);
-      const snapshot = await getDoc(userRef);
-  
-      if (!snapshot.exists()) {
-        // Create Firestore document after email verification
-        await setDoc(userRef, {
-          username: req.body.username || "Unknown",
-          email: email,
-          createdAt: new Date().toISOString(),
-          activate_email: true,
-        });
+      const new_id = user_email + "-" + new Date().toISOString()
+      
+      const hisRef = doc(db, "history", new_id);
+      const snapshot_history = await getDoc(hisRef, `users/${userId}`);
+      const docRef = doc(db, `users/${userId}`);
+      const userDoc = await getDoc(docRef);
+      const userData = userDoc.data();
+      if (userData.has_login == false){
+        if (snapshot.exists()) {
+          // Create Firestore document after email verification
+          await updateDoc(userRef, {
+            activate_email: true,
+            has_login: true
+          });
+        }
       }
+      // Check if Firestore document exists
   
       const idToken = userCredential._tokenResponse.idToken;
       if (idToken) {
         res.cookie("access_token", idToken, { httpOnly: true });
-        return res.redirect("/");
+        return res.redirect("/profile");
       } else {
         res.status(500).json({ error: "Internal Server Error" });
       }
@@ -114,6 +148,7 @@ class FirebaseAuthController {
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
+  
 }
 //   async addHistoryEntry(req, res) {
 //     const { userId, datetime, state, imageUrl, result } = req.body;
