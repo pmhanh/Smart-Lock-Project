@@ -108,7 +108,7 @@ const getHistoryEntry = async(req, res) =>{
     if (userDoc.data().entries){
       userHistory = userDoc.data().entries;
     }
-    return res.render('history', { history: userHistory , user: userInfo});
+    return res.render('history', { history: userHistory , user: userInfo, userId});
 
   } catch (error) {
     console.error('Error fetching user history:', error);
