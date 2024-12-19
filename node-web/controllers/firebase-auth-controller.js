@@ -11,7 +11,7 @@ const {
 const { v4: uuidv4 } = require('uuid');
 const { getFirestore, doc, setDoc, getDoc, updateDoc, query, collection, where } = require('firebase/firestore');
 
-const { setPersistence} = require("firebase/auth");
+const { setPersistence, browserLocalPersistence} = require("firebase/auth");
 const auth = getAuth();
 
 function generateUserId() {
