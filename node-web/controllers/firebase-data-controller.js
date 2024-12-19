@@ -95,7 +95,6 @@ const addHistoryEntry = async (req, res) => {
 };
 
 const getHistoryEntry = async(req, res) =>{
-
   try {
     const userId = getAuth().currentUser.uid;
     const user = getAuth().currentUser;
