@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="/css/monitor.css">
+</head>
+<body>
+
+  <div class="navbar">
+    <button>Home</button>
+    <button>Profile</button>
+    <button>Sign out</button>
+  </div>
+
+  <div class="sidebar">
+    <button>Monitor</button>
+    <button>History</button>
+  </div>
+
+  <div class="content">
+    <div class="card">
+      <img src="https://via.placeholder.com/50" alt="Fingerprint">
+      <p id="add-fingerprint">Add Fingerprint</p>
+    </div>
+    <div class="card">
+      <img src="https://via.placeholder.com/50" alt="Password">
+      <p>Change Password</p>
+    </div>
+    <div class="card">
+      <img src="https://via.placeholder.com/50" alt="Lock">
+      <p>Lock/Unlock</p>
+    </div>
+    <div class="card">
+      <img src="https://via.placeholder.com/50" alt="Alert">
+      <p>Sound Alert</p>
+    </div>
+  </div>
+
+</body>
+<script>
+  document.querySelector('p #add-fingerprint').addEventListener('click', () => {
+    fetch('/add-fingerprint', { method: 'POST' })
+      .then(response => response.json())
+      .then(data => alert(data.message))
+      .catch(error => console.error('Error:', error));
+  });
+</script>
+</html>
