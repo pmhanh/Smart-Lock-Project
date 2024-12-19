@@ -11,11 +11,13 @@ const {
 const { v4: uuidv4 } = require('uuid');
 const { getFirestore, doc, setDoc, getDoc, updateDoc, query, collection, where } = require('firebase/firestore');
 
+const { setPersistence, browserLocalPersistence } = require("firebase/auth");
 const auth = getAuth();
 
 function generateUserId() {
   return uuidv4();
 }
+
 
 class FirebaseAuthController {
   async registerUser(req, res) {
@@ -102,6 +104,7 @@ class FirebaseAuthController {
     }
   
     try {
+      await setPersistence(auth, browserLocalPersistence);
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       const userId = user.uid;
