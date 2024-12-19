@@ -98,10 +98,15 @@ const getHistoryEntry = async(req, res) =>{
 
   try {
     const userId = getAuth().currentUser.uid;
+    const user = getAuth().currentUser;
     const docRef = doc(db, `history/${userId}`);
+    const userInfo = (await getDoc(doc(db, `users/${userId}`))).data()
     const userDoc = await getDoc(docRef);
-    const userHistory = userDoc.data().entries || [];
-    return res.render('history', { history: userHistory });
+    let userHistory = [];
+    if (userDoc.data().entries){
+      userHistory = userDoc.data().entries;
+    }
+    return res.render('history', { history: userHistory , user: userInfo});
 
   } catch (error) {
     console.error('Error fetching user history:', error);
