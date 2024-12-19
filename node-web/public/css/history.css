@@ -24,6 +24,24 @@ header {
     font-size: 1.5rem;
     font-weight: bold;
 }
+.left-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+header nav .button {
+    text-decoration: none;
+    margin: 0 10px;
+    color: #333;
+    padding: 8px 12px;
+    border-radius: 8px;
+  }
+  
+  header nav .button:hover {
+    background-color: #ddd;
+  }
+
   
 .nav-btn {
     margin-left: 1rem;

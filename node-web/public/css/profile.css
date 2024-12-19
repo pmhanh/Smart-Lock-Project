@@ -58,6 +58,11 @@ header {
   background-color: #f3425f;
 }
 
+.left-header{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
 /* Main Layout */
 main {
   display: flex;
