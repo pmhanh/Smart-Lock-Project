@@ -1,3 +1,23 @@
+    <header>
+        <div class="logo">
+            <a href="../css/index.html">
+                <img src="../asset/lock.png" alt="Lock icon" class="icon-img">
+            </a>
+            <p class="icon-text">Smart Lock</p>
+        </div>
+        <nav>
+          <div class="left-header">
+            <div class="navbar">
+              <a href="/{{userId}}/history" class="button">Home</a>
+              <a href="/{{userId}}/profile" class="button">Profile</a>
+              <a href="/{{userId}}/signout" class="button">Sign out</a>
+              <p>Hello {{user.username}}</p>
+            </div>
+          </div>
+        </nav>
+    </header>
+    <style>
+
 /* General reset */
 * {
     margin: 0;
@@ -135,26 +155,25 @@ tbody tr:nth-child(odd) {
     margin-right: 20px;
 }
   
-
-.button {
+  .navbar .button {
     background-color: #33a399;
     border: none;
     border-radius: 5px;
     padding: 10px 20px;
-    color: white !important;
-    font-size: 20px;
-    
+    color: white;
+    font-size: 14px;
     cursor: pointer;
     
   }
   
-  .button:nth-child(2) {
+  .navbar .button:nth-child(2) {
     background-color: #003f54;
   }
   
-  .button:nth-child(3) {
+  .navbar .button:nth-child(3) {
     background-color: #c5c6c7;
-    color: black !important;
+    color: black;
     margin-right: 60px;
   }
-  
+
+    </style>

@@ -69,8 +69,9 @@ app.get('/notify', (req, res) => {
 })
 
 
-app.get('/monitor', (req, res) => {
-  res.render('monitor')
+app.get('/:userId/monitor', (req, res) => {
+  const userId = req.path.split('/')[1]
+  res.render('monitor', {userId : userId})
 })
 
 
