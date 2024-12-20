@@ -11,11 +11,14 @@ const {
 const { v4: uuidv4 } = require('uuid');
 const { getFirestore, doc, setDoc, getDoc, updateDoc, query, collection, where } = require('firebase/firestore');
 
+const { setPersistence, browserLocalPersistence} = require("firebase/auth");
+
 const auth = getAuth();
 
 function generateUserId() {
   return uuidv4();
 }
+
 
 class FirebaseAuthController {
   async registerUser(req, res) {
@@ -94,7 +97,6 @@ class FirebaseAuthController {
     const email = req.body.email;
     const password = req.body.password;
   
-    
     if (!email || !password) {
       return res.status(422).json({
         email: "Email is required",
@@ -103,42 +105,33 @@ class FirebaseAuthController {
     }
   
     try {
+      await setPersistence(auth, browserLocalPersistence);
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-      const userId = user.uid
-      const user_email = user.email
+      const userId = user.uid;
   
-      const userRef = doc(db, "users", user.uid);
-      const snapshot = await getDoc(userRef);
-      // Ensure the user has verified their email
       if (!user.emailVerified) {
         await signOut(auth);
         return res.status(403).json({
           error: "Please verify your email address before logging in.",
         });
       }
-      const new_id = user_email + "-" + new Date().toISOString()
-      
-      const hisRef = doc(db, "history", new_id);
-      const snapshot_history = await getDoc(hisRef, `users/${userId}`);
-      const docRef = doc(db, `users/${userId}`);
-      const userDoc = await getDoc(docRef);
+  
+      const userRef = doc(db, "users", userId);
+      const userDoc = await getDoc(userRef);
       const userData = userDoc.data();
-      if (userData.has_login == false){
-        if (snapshot.exists()) {
-          // Create Firestore document after email verification
-          await updateDoc(userRef, {
-            activate_email: true,
-            has_login: true
-          });
-        }
+  
+      if (userData?.has_login === false) {
+        await updateDoc(userRef, {
+          activate_email: true,
+          has_login: true,
+        });
       }
-      // Check if Firestore document exists
   
       const idToken = userCredential._tokenResponse.idToken;
       if (idToken) {
         res.cookie("access_token", idToken, { httpOnly: true });
-        return res.redirect("/profile");
+        return res.redirect(`/${userId}/profile`);
       } else {
         res.status(500).json({ error: "Internal Server Error" });
       }
@@ -147,6 +140,7 @@ class FirebaseAuthController {
       res.status(500).json({ error: error.message || "Login failed" });
     }
   }
+  
   
 
   async resetPassword(req, res) {

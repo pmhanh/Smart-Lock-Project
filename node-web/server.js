@@ -1,6 +1,5 @@
 //import
 const express = require('express');
-const mqtt = require('mqtt');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const exphbs = require('express-handlebars');
@@ -8,6 +7,13 @@ const app = express();
 require("dotenv").config();
 const PORT = process.env.PORT || 3000;
 const auth_router= require('./routes');
+const mqtt = require('mqtt')
+const mqttClient = mqtt.connect('mqtt://localhost'); // Replace 'localhost' with your broker's address
+
+
+
+const host =  '570cff221bf04d3a90d0b5d329999263.s1.eu.hivemq.cloud'
+const port = '8883'
 
 app.use(express.static('public'));
 app.use(cookieParser())
@@ -60,6 +66,24 @@ app.get('/reset', (req, res) => {
 app.get('/notify', (req, res) => {
   res.render('notify_password')
 })
+
+
+app.get('/:userId/monitor', (req, res) => {
+  const userId = req.path.split('/')[1]
+  res.render('monitor', {userId : userId})
+})
+
+
+// mqtt
+app.post('/add-fingerprint', (req, res) => {
+  mqttClient.publish('iot/smartlock/fingerprint', 'ENROLL', (err) => {
+    if (err) {
+      console.error('Failed to publish message:', err);
+      return res.status(500).json({ error: 'Failed to send command' });
+    }
+    res.json({ message: 'Fingerprint enrollment command sent via MQTT.' });
+  });
+});
 
 
 

@@ -15,7 +15,7 @@ const getCurrentUserData = async (req, res) => {
       console.log(userDoc)
       const userData = userDoc.data();
       console.log(userData)
-      return res.render('profile', {user: userData})
+      return res.render('profile', {user: userData, userId: userId})
   } catch (error) {
       console.error("Error fetching user data:", error);
       return res.status(500).json({ message: "Error fetching user data" });
@@ -25,6 +25,7 @@ const getCurrentUserData = async (req, res) => {
 const updateUsername = async (req, res) => {
   const auth = getAuth();
   const user = auth.currentUser;
+  const userId = auth.currentUser.uid;
 
   if (!user) {
       return res.status(401).json({ message: "User not authenticated" });
@@ -38,9 +39,10 @@ const updateUsername = async (req, res) => {
       
       // Update Firestore document with new username
       await updateDoc(docRef, { username: newUsername });
+      username = {"username": newUsername }
 
       // Optionally redirect back to profile or send success message
-      res.redirect('/profile');
+      res.redirect(`/${userId}/profile`);
   } catch (error) {
       console.error("Error updating username:", error);
       return res.status(500).json({ message: "Error updating username" });
@@ -105,7 +107,7 @@ const getHistoryEntry = async(req, res) =>{
     if (userDoc.data().entries){
       userHistory = userDoc.data().entries;
     }
-    return res.render('history', { history: userHistory , user: userInfo});
+    return res.render('history', { history: userHistory , user: userInfo, userId : userId});
 
   } catch (error) {
     console.error('Error fetching user history:', error);

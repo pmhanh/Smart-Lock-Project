@@ -16,16 +16,18 @@
         </div>
         <nav>
           <div class="left-header">
-            <a href="/history" class="button">Home</a>
-            <a href="/profile" class="button">Profile</a>
-            <a href="/signout" class="button">Sign out</a>
-            <p>Hello {{user.username}}</p>
+              <a href="/{{userId}}/history" class="button">Home</a>
+              <a href="/{{userId}}/profile" class="button">Profile</a>
+              <a href="/{{userId}}/signout" class="button">Sign out</a>
+              <p>Hello {{user.username}}</p>
           </div>
         </nav>
     </header>
     <main>
         <aside>
-            <button class="side-btn">Monitor</button>
+            <a href="/{{userId}}/monitor">
+              <button class="side-btn">Monitor</button>
+            </a>
             <button class="side-btn">History</button>
             <button class="side-btn" onclick="controlLock('Lock')">Lock</button>
             <button class="side-btn" onclick="controlLock('Unlock')">Unlock</button>
