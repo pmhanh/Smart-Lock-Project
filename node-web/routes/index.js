@@ -19,5 +19,8 @@ router.get("/:userId/profile", firebaseData.getCurrentUserData);
 router.post("/:userId/update-profile", firebaseData.updateUsername);
 router.get("/:userId/history", firebaseData.getHistoryEntry);
 
+router.get("/:userId/monitor", firebaseData.getMonitor);
+//router.post("/:userId/send-notification", firebaseData.sendNotificationtoPhone);
+
 
 module.exports = router;

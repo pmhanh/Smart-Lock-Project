@@ -25,12 +25,13 @@
     </header>
     <main>
         <aside>
-            <a href="/{{userId}}/monitor">
+            <a href="/{{userId}}/monitor" class="side-btn">
               <button class="side-btn">Monitor</button>
             </a>
-            <button class="side-btn">History</button>
-            <button class="side-btn" onclick="controlLock('Lock')">Lock</button>
-            <button class="side-btn" onclick="controlLock('Unlock')">Unlock</button>
+            <a href="/{{userId}}/history" class="side-btn">
+              <button class="side-btn">History</button>
+            </a>
+            {{!-- <button class="side-btn">History</button> --}}
         </aside>
         <section class="history-table">
             <table>
