@@ -26,9 +26,10 @@ const int warning_time = 40;
 int lastTime = 0;
 int lastTimeBuzzer = 0;
 int wrong_rq = 0;
-const int buzzer_pin;
-const int accept_led_pin;
-const int reject_led_pin;
+const int buzzer_pin = 13;
+const int accept_led_pin = 22;
+const int reject_led_pin = 23;
+const int lock_state_pin = 12;
 
 // Fingerprint sensor
 Adafruit_Fingerprint finger = Adafruit_Fingerprint(&Serial0);
@@ -117,7 +118,7 @@ void turnOffRejectLED(){
 }
 
 
-void turnOffAcceptLED(){
+void turnOnAcceptLED(){
   int lastTimeLED = 0;
   digitalWrite(reject_led_pin, 1);
 }

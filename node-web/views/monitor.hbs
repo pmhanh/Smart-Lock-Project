@@ -28,41 +28,81 @@
 </header>
 <main>
   <aside>
-      <a href="/{{userId}}/monitor">
+      <a href="/{{userId}}/monitor" class="side-btn">
         <button class="side-btn">Monitor</button>
       </a>
-      <button class="side-btn">History</button>
-      <button class="side-btn" onclick="controlLock('Lock')">Lock</button>
-      <button class="side-btn" onclick="controlLock('Unlock')">Unlock</button>
+      <a href="/{{userId}}/history" class="side-btn">
+        <button class="side-btn">History</button>
+      </a>
+      {{!-- <button class="side-btn">History</button> --}}
+      {{!-- <button class="side-btn" onclick="controlLock('Lock')">Lock</button>
+      <button class="side-btn" onclick="controlLock('Unlock')">Unlock</button> --}}
   </aside>
-
   <div class="content">
-    <div class="card">
+    <div class="card" onclick="control('Add_finger_print')">
       <img src="https://via.placeholder.com/50" alt="Fingerprint">
       <p id="add-fingerprint">Add Fingerprint</p>
     </div>
-    <div class="card">
+    <div class="card" onclick="control('changePassword')">
       <img src="https://via.placeholder.com/50" alt="Password">
       <p>Change Password</p>
     </div>
-    <div class="card">
+
+    <div class="card" onclick="control('Unlock')">
       <img src="https://via.placeholder.com/50" alt="Lock">
-      <p>Lock/Unlock</p>
+      <p>Unlock</p>
     </div>
-    <div class="card">
-      <img src="https://via.placeholder.com/50" alt="Alert">
-      <p>Sound Alert</p>
+    <div class="card" onclick="control('Buzzer')">
+      <img src="https://via.placeholder.com/50" alt="Lock">
+      <p>Buzzer</p>
     </div>
+      
   </div>
 </main>
 
 </body>
 <script>
+  console.log({{lockState}});
   document.querySelector('p #add-fingerprint').addEventListener('click', () => {
     fetch('/add-fingerprint', { method: 'POST' })
       .then(response => response.json())
       .then(data => alert(data.message))
       .catch(error => console.error('Error:', error));
   });
+  document.getElementById('toggleBuzzer').addEventListener('click', () => {
+      // Send POST request to /control with Buzzer command
+      fetch('/control', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ command: 'Buzzer' }),
+      })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            alert(data.message);
+          } else {
+            alert('Failed to send command: ' + data.message);
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    });
+  async function control(command) {
+    try {
+      console.log("hii");
+      console.log(command);
+      const response = await fetch('/control', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ command }),
+      });
+      
+    } catch (error) {
+      console.error('Error sending command:', error);
+    }
+  }
 </script>
 </html>
