@@ -75,7 +75,7 @@
           const tableBody = document.getElementById('lock-history');
           const newRow = document.createElement('tr');
           newRow.innerHTML = `
-            <td>${new Date().toLocaleString()}</td>
+            <td>${new Date().toLocaleString('vi-VN')}</td>
             <td>${status}</td>
           `;
           tableBody.appendChild(newRow);

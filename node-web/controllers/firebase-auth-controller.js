@@ -13,6 +13,7 @@ const { getFirestore, doc, setDoc, getDoc, updateDoc, query, collection, where }
 
 const { setPersistence, browserLocalPersistence} = require("firebase/auth");
 
+const firebaseData = require('./firebase-data-controller')
 const auth = getAuth();
 
 function generateUserId() {
@@ -131,7 +132,7 @@ class FirebaseAuthController {
       const idToken = userCredential._tokenResponse.idToken;
       if (idToken) {
         res.cookie("access_token", idToken, { httpOnly: true });
-        return res.redirect(`/${userId}/profile`);
+        return res.redirect(`/${userId}/monitor`);
       } else {
         res.status(500).json({ error: "Internal Server Error" });
       }
@@ -152,7 +153,7 @@ class FirebaseAuthController {
 
     try {
       await sendPasswordResetEmail(auth, email);
-      res.render('notify_password');
+      res.render('notify_password', {message: "Email has been sent to reset password"});
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
