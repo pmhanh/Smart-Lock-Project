@@ -173,7 +173,7 @@ mqttClient.on('message', async (topic, message) => {
     //   data = { text: messageString }; // Treat non-JSON messages as plain text
     // }
 
-    const datetime = new Date().toLocaleString();
+    const datetime = new Date().toLocaleString('vi-VN');
 
     // Process message (add logic based on your application's needs)
     if (data.text) {
