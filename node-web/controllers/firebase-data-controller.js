@@ -206,17 +206,17 @@ const getMonitor = async(req, res) => {
     const userDoc = await getDoc(docRef);
     const hisDoc = await getDoc(hisRef)
     const userData = userDoc.data();
-    let userHistory = [];
-    if (hisDoc.data().entries){
-      userHistory = hisDoc.data().entries;
-    }
-    console.log(userHistory);
-    let lockCommand;
-    if (userHistory.at(-1).state.toString() == "Lock"){
-      lockCommand = "Lock"
-    }
-    else lockCommand = "Unlock"
-    return res.render('monitor', {user: userData, userId: userId, lastLockState : userHistory.at(-1).state.toString(), lockStateCommand: lockCommand})
+    // let userHistory = [];
+    // if (hisDoc.data().entries){
+    //   userHistory = hisDoc.data().entries;
+    // }
+    // console.log(userHistory);
+    // let lockCommand;
+    // if (userHistory.at(-1).state.toString() == "Lock"){
+    //   lockCommand = "Lock"
+    // }
+    // else lockCommand = "Unlock"
+    return res.render('monitor', {user: userData, userId: userId})
   } catch (error) {
       console.error("Error fetching user data:", error);
       return res.status(500).json({ message: "Error fetching user data" });
