@@ -8,9 +8,6 @@ require("dotenv").config();
 const PORT = process.env.PORT || 3000;
 const auth_router= require('./routes');
 const mqtt = require('mqtt')
-const mqttClient = mqtt.connect('mqtt://localhost'); // Replace 'localhost' with your broker's address
-
-
 
 const host =  '570cff221bf04d3a90d0b5d329999263.s1.eu.hivemq.cloud'
 const port = '8883'
